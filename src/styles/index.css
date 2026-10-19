@@ -1,0 +1,227 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050d1a;
+  --color-surface: #0c1b2e;
+  --color-surface-light: #11273f;
+  --color-primary: #329dff;
+  --color-cyan: #78d7ff;
+  --color-ink: #f4f8ff;
+  --color-mute: #a5bbd3;
+  --color-dim: #6c84a0;
+  --color-line: rgba(80, 160, 255, 0.22);
+  --color-gold: #d8b46a;
+  --color-paper: #f1eadb;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", "Cinzel", Georgia, "Times New Roman", serif;
+  --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  background: var(--color-bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 700px at 70% -10%, rgba(50, 157, 255, 0.10), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(120, 215, 255, 0.06), transparent 60%),
+    var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(50, 157, 255, 0.45);
+}
+
+/* ---------- Reusable surfaces ---------- */
+@layer components {
+  .glass {
+    background: linear-gradient(180deg, rgba(17, 39, 63, 0.72), rgba(12, 27, 46, 0.62));
+    border: 1px solid var(--color-line);
+    box-shadow:
+      0 0 0 1px rgba(120, 215, 255, 0.03) inset,
+      0 18px 50px -20px rgba(0, 0, 0, 0.7),
+      0 0 40px -18px rgba(50, 157, 255, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 16px;
+  }
+
+  .glass-soft {
+    background: rgba(12, 27, 46, 0.55);
+    border: 1px solid rgba(80, 160, 255, 0.16);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    letter-spacing: 0.28em;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .hud-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    border-radius: 999px;
+    padding: 18px 40px;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: linear-gradient(100deg, #0b4fa8 0%, #1f7ff0 45%, #46b6ff 100%);
+    border: 1px solid rgba(160, 220, 255, 0.55);
+    box-shadow:
+      0 0 0 4px rgba(50, 157, 255, 0.12),
+      0 0 40px rgba(50, 157, 255, 0.55),
+      0 0 90px -10px rgba(120, 215, 255, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.8s ease;
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 0 6px rgba(50, 157, 255, 0.16),
+      0 0 60px rgba(50, 157, 255, 0.75),
+      0 0 120px -10px rgba(120, 215, 255, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  .btn-primary:hover:not(:disabled)::after {
+    transform: translateX(120%);
+  }
+  .btn-primary:disabled {
+    cursor: default;
+    filter: saturate(0.7);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-ink);
+    border: 1px solid rgba(120, 190, 255, 0.4);
+    background: rgba(12, 27, 46, 0.6);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 18px rgba(50, 157, 255, 0.4);
+    color: #fff;
+  }
+
+  .nav-pill-active {
+    color: #fff;
+    border-color: rgba(120, 215, 255, 0.55) !important;
+    background: rgba(50, 157, 255, 0.14);
+    box-shadow: 0 0 18px rgba(50, 157, 255, 0.35), inset 0 0 12px rgba(50, 157, 255, 0.15);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px rgba(50, 157, 255, 0.55);
+  }
+
+  .paper {
+    background-color: #f2ead9;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.6), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(180, 160, 120, 0.18), transparent 50%),
+      repeating-linear-gradient(0deg, rgba(120, 100, 70, 0.025) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(120, 100, 70, 0.02) 0 1px, transparent 1px 4px);
+  }
+  .paper-guilloche {
+    background-image:
+      repeating-radial-gradient(circle at 50% 120%, rgba(60, 110, 160, 0.07) 0 1px, transparent 1px 9px),
+      repeating-radial-gradient(circle at 50% -20%, rgba(60, 110, 160, 0.05) 0 1px, transparent 1px 11px);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(80, 160, 255, 0.3);
+    border-radius: 6px;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #0c1b2e 0px, #15304d 200px, #0c1b2e 400px);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
