@@ -64,11 +64,13 @@ export function SmartImage({
   const [src, setSrc] = useState<string | null | undefined>(cached)
   const [loaded, setLoaded] = useState(false)
   const [broken, setBroken] = useState(false)
+  const [raw, setRaw] = useState(false)
 
   useEffect(() => {
     let alive = true
     setLoaded(false)
     setBroken(false)
+    setRaw(false)
     const c = getCachedWikiImage(wiki)
     if (c !== undefined) {
       setSrc(c)
@@ -100,14 +102,14 @@ export function SmartImage({
       )}
       {src && !broken && (
         <img
-          src={sizedImage(src, width)}
+          src={raw ? src : sizedImage(src, width)}
           alt={alt}
           loading="lazy"
           onLoad={() => setLoaded(true)}
           onError={() => {
-            // Some thumbnails don't exist at the requested width — retry original once
-            if (sizedImage(src, width) !== src && !loaded) {
-              setSrc(src.replace(/\/thumb\//, '/').replace(/\/\d+px-[^/]+$/, ''))
+            // If the resized thumbnail is refused, fall back to the URL Wikipedia gave us
+            if (!raw && sizedImage(src, width) !== src) {
+              setRaw(true)
               return
             }
             setBroken(true)
